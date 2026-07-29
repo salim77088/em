@@ -1,0 +1,31 @@
+// NEXUS Engine - EZScript demo
+// A simple program that prints "Hello, NEXUS!" and computes 2+3
+
+var name = "NEXUS"
+var version = 1.0
+
+print("Hello, " + name + "!")
+print("Version:", version)
+
+func add(a, b) {
+    return a + b
+}
+
+var result = add(2, 3)
+print("2 + 3 =", result)
+
+// Loop demo
+var i = 0
+while i < 5 {
+    print("i =", i)
+    i = i + 1
+}
+
+// Array demo
+var arr = [10, 20, 30]
+print("Array length:", len(arr))
+print("First element:", arr[0])
+
+// Object demo
+var obj = { name: "Test", value: 42 }
+print("Object name:", obj.name)

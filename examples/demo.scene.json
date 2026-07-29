@@ -1,0 +1,38 @@
+{
+  "name": "Demo Scene",
+  "entities": [
+    {
+      "id": 1,
+      "name": "Cube",
+      "tag": "player",
+      "transform": {
+        "position": [0, 0, 0],
+        "rotation": [0, 45, 0],
+        "scale": [1, 1, 1]
+      },
+      "mesh": { "has": true }
+    },
+    {
+      "id": 2,
+      "name": "Directional Light",
+      "light": {
+        "type": 0,
+        "color": [1, 0.95, 0.9],
+        "intensity": 1.2,
+        "range": 100
+      }
+    },
+    {
+      "id": 3,
+      "name": "Main Camera",
+      "camera": {
+        "position": [0, 2, -5],
+        "target": [0, 0, 0],
+        "fov": 60,
+        "near": 0.1,
+        "far": 1000,
+        "primary": true
+      }
+    }
+  ]
+}

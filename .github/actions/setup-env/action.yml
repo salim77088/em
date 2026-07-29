@@ -1,0 +1,73 @@
+name: Setup Build Environment
+
+inputs:
+  os:
+    description: 'Operating system'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Install Linux dependencies
+      if: runner.os == 'Linux'
+      shell: bash
+      run: |
+        sudo apt-get update -qq
+        sudo apt-get install -y -qq \
+          build-essential \
+          cmake \
+          ninja-build \
+          git \
+          pkg-config \
+          libgl1-mesa-dev \
+          libglu1-mesa-dev \
+          libx11-dev \
+          libxext-dev \
+          libxrandr-dev \
+          libxinerama-dev \
+          libxcursor-dev \
+          libxi-dev \
+          libxxf86vm-dev \
+          libwayland-dev \
+          libxkbcommon-dev \
+          wayland-protocols \
+          libdbus-1-dev \
+          libibus-1.0-dev \
+          libasound2-dev \
+          libpulse-dev \
+          libudev-dev \
+          libjack-dev
+
+    - name: Set up MSVC (Windows)
+      if: runner.os == 'Windows'
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: x64
+
+    - name: Set up macOS
+      if: runner.os == 'macOS'
+      shell: bash
+      run: |
+        echo "macOS setup - using system compiler"
+        sw_vers
+        xcodebuild -version || true
+
+    - name: Cache CMake build
+      uses: actions/cache@v4
+      with:
+        path: |
+          build/_deps
+          ~/.cache/ccache
+        key: ${{ inputs.os }}-cmake-${{ hashFiles('CMakeLists.txt') }}
+        restore-keys: |
+          ${{ inputs.os }}-cmake-
+
+    - name: Print environment info
+      shell: bash
+      run: |
+        echo "=== OS Info ==="
+        uname -a || ver
+        echo "=== Compiler Info ==="
+        cmake --version
+        echo "=== Disk Space ==="
+        df -h || true
