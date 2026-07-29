@@ -5,6 +5,8 @@
 #include <variant>
 #include <functional>
 #include <cstdint>
+#include <memory>
+#include <algorithm>
 
 namespace nexus::scripting {
 

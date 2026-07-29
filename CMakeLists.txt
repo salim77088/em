@@ -143,11 +143,14 @@ add_library(nexus_engine STATIC ${ENGINE_SOURCES})
 target_include_directories(nexus_engine PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     # Explicit bgfx include paths as a safety net
-    ${FETCHCONTENT_BASE_DIR}/bgfx.cmake-src/bgfx/include
-    ${FETCHCONTENT_BASE_DIR}/bgfx.cmake-src/bx/include
-    ${FETCHCONTENT_BASE_DIR}/bgfx.cmake-src/bimg/include
-    ${FETCHCONTENT_BASE_DIR}/bgfx.cmake-src/bx/include/compat
+    ${CMAKE_BINARY_DIR}/_deps/bgfx-src/include
+    ${CMAKE_BINARY_DIR}/_deps/bx-src/include
+    ${CMAKE_BINARY_DIR}/_deps/bimg-src/include
+    ${CMAKE_BINARY_DIR}/_deps/bx-src/include/compat
+    ${CMAKE_BINARY_DIR}/_deps/bgfx-src/3rdparty
+    ${CMAKE_BINARY_DIR}/_deps/bimg-src/3rdparty
 )
+target_compile_definitions(nexus_engine PUBLIC GLM_ENABLE_EXPERIMENTAL)
 
 target_link_libraries(nexus_engine PUBLIC
     bgfx
