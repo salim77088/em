@@ -10,7 +10,6 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
 endif()
 
-# Universal flags
 if(MSVC)
     add_compile_options(/W3 /permissive- /Zc:__cplusplus /EHsc /bigobj /utf-8)
     add_compile_definitions(_CRT_SECURE_NO_WARNINGS _WINSOCK_DEPRECATED_NO_WARNINGS NOMINMAX WIN32_LEAN_AND_MEAN)
@@ -86,9 +85,14 @@ if(NOT imgui_POPULATED)
     target_compile_features(imgui PUBLIC cxx_std_17)
 endif()
 
-# SDL2
-set(SDL_SHARED OFF CACHE BOOL "" FORCE)
-set(SDL_STATIC ON CACHE BOOL "" FORCE)
+# SDL2 — use shared lib on Windows (static has issues), static on Linux/macOS
+if(WIN32)
+    set(SDL_SHARED ON CACHE BOOL "" FORCE)
+    set(SDL_STATIC OFF CACHE BOOL "" FORCE)
+else()
+    set(SDL_SHARED OFF CACHE BOOL "" FORCE)
+    set(SDL_STATIC ON CACHE BOOL "" FORCE)
+endif()
 set(SDL_TEST OFF CACHE BOOL "" FORCE)
 set(SDL_INSTALL OFF CACHE BOOL "" FORCE)
 set(SDL_TESTS OFF CACHE BOOL "" FORCE)
@@ -97,18 +101,17 @@ FetchContent_Declare(SDL2
     GIT_TAG release-2.30.6
     GIT_SHALLOW TRUE)
 FetchContent_MakeAvailable(SDL2)
-if(TARGET SDL2-static)
+if(TARGET SDL2::SDL2)
+    set(SDL2_LIBRARIES SDL2::SDL2)
+elseif(TARGET SDL2-static)
     set(SDL2_LIBRARIES SDL2-static)
-    set(SDL2_INCLUDE_DIRS "")
 elseif(TARGET SDL2::SDL2-static)
     set(SDL2_LIBRARIES SDL2::SDL2-static)
-    set(SDL2_INCLUDE_DIRS "")
 else()
     set(SDL2_LIBRARIES SDL2)
-    set(SDL2_INCLUDE_DIRS "")
 endif()
 
-# bgfx via bgfx.cmake wrapper
+# bgfx via bgfx.cmake — let it fetch its own bx/bimg/bgfx at known compatible revisions
 set(BGFX_BUILD_TOOLS OFF CACHE BOOL "" FORCE)
 set(BGFX_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(BGFX_USE_DEBUG_SUFFIX OFF CACHE BOOL "" FORCE)
@@ -123,6 +126,12 @@ FetchContent_Declare(bgfx.cmake
     GIT_SHALLOW TRUE)
 FetchContent_MakeAvailable(bgfx.cmake)
 
+# Explicit include dirs in case bgfx.cmake doesn't propagate them correctly
+if(TARGET bgfx)
+    get_target_property(_bgfx_inc bgfx INTERFACE_INCLUDE_DIRECTORIES)
+    message(STATUS "bgfx INTERFACE_INCLUDE_DIRECTORIES: ${_bgfx_inc}")
+endif()
+
 # Engine library
 file(GLOB_RECURSE ENGINE_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
@@ -131,7 +140,14 @@ file(GLOB_RECURSE ENGINE_SOURCES
 list(REMOVE_ITEM ENGINE_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp")
 
 add_library(nexus_engine STATIC ${ENGINE_SOURCES})
-target_include_directories(nexus_engine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_include_directories(nexus_engine PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    # Explicit bgfx include paths as a safety net
+    ${FETCHCONTENT_BASE_DIR}/bgfx.cmake-src/bgfx/include
+    ${FETCHCONTENT_BASE_DIR}/bgfx.cmake-src/bx/include
+    ${FETCHCONTENT_BASE_DIR}/bgfx.cmake-src/bimg/include
+    ${FETCHCONTENT_BASE_DIR}/bgfx.cmake-src/bx/include/compat
+)
 
 target_link_libraries(nexus_engine PUBLIC
     bgfx
