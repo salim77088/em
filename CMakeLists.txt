@@ -145,6 +145,11 @@ foreach(_p
         message(STATUS "MISSING: ${_p}")
     endif()
 endforeach()
+# List actual contents of bgfx/include/
+file(GLOB _bgfx_inc_files "${CMAKE_BINARY_DIR}/_deps/bgfx.cmake-src/bgfx/include/*")
+message(STATUS "bgfx/include/ contents: ${_bgfx_inc_files}")
+file(GLOB _bgfx_inc_bgfx_files "${CMAKE_BINARY_DIR}/_deps/bgfx.cmake-src/bgfx/include/bgfx/*")
+message(STATUS "bgfx/include/bgfx/ contents: ${_bgfx_inc_bgfx_files}")
 message(STATUS "=== End debug ===")
 
 # Use global include_directories as a more robust alternative
