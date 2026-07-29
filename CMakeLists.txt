@@ -142,13 +142,13 @@ list(REMOVE_ITEM ENGINE_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp")
 add_library(nexus_engine STATIC ${ENGINE_SOURCES})
 target_include_directories(nexus_engine PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/src
-    # Explicit bgfx include paths as a safety net
-    ${CMAKE_BINARY_DIR}/_deps/bgfx-src/include
-    ${CMAKE_BINARY_DIR}/_deps/bx-src/include
-    ${CMAKE_BINARY_DIR}/_deps/bimg-src/include
-    ${CMAKE_BINARY_DIR}/_deps/bx-src/include/compat
-    ${CMAKE_BINARY_DIR}/_deps/bgfx-src/3rdparty
-    ${CMAKE_BINARY_DIR}/_deps/bimg-src/3rdparty
+    # Explicit bgfx include paths (bgfx.cmake uses git submodules in bgfx.cmake-src/)
+    ${CMAKE_BINARY_DIR}/_deps/bgfx.cmake-src/bgfx/include
+    ${CMAKE_BINARY_DIR}/_deps/bgfx.cmake-src/bx/include
+    ${CMAKE_BINARY_DIR}/_deps/bgfx.cmake-src/bimg/include
+    ${CMAKE_BINARY_DIR}/_deps/bgfx.cmake-src/bx/include/compat
+    ${CMAKE_BINARY_DIR}/_deps/bgfx.cmake-src/bgfx/3rdparty
+    ${CMAKE_BINARY_DIR}/_deps/bgfx.cmake-src/bimg/3rdparty
 )
 target_compile_definitions(nexus_engine PUBLIC GLM_ENABLE_EXPERIMENTAL)
 
