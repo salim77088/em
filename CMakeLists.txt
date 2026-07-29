@@ -119,7 +119,7 @@ set(BGFX_CONFIG_RENDERER_OPENGL ON CACHE BOOL "" FORCE)
 set(BGFX_CONFIG_USE_TINYST OFF CACHE BOOL "" FORCE)
 FetchContent_Declare(bgfx.cmake
     GIT_REPOSITORY https://github.com/bkaradzic/bgfx.cmake.git
-    GIT_TAG v1.128.8490-465
+    GIT_TAG master
     GIT_SHALLOW TRUE)
 FetchContent_MakeAvailable(bgfx.cmake)
 
