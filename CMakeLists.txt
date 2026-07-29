@@ -132,6 +132,32 @@ if(TARGET bgfx)
     message(STATUS "bgfx INTERFACE_INCLUDE_DIRECTORIES: ${_bgfx_inc}")
 endif()
 
+# Debug: print actual bgfx.cmake paths
+message(STATUS "=== NEXUS Debug ===")
+foreach(_p
+    "${CMAKE_BINARY_DIR}/_deps/bgfx.cmake-src"
+    "${CMAKE_BINARY_DIR}/_deps/bgfx.cmake-src/bgfx"
+    "${CMAKE_BINARY_DIR}/_deps/bgfx.cmake-src/bgfx/include"
+    "${CMAKE_BINARY_DIR}/_deps/bgfx.cmake-src/bgfx/include/bgfx/platform.h")
+    if(EXISTS "${_p}")
+        message(STATUS "EXISTS: ${_p}")
+    else()
+        message(STATUS "MISSING: ${_p}")
+    endif()
+endforeach()
+message(STATUS "=== End debug ===")
+
+# Use global include_directories as a more robust alternative
+include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_BINARY_DIR}/_deps/bgfx.cmake-src/bgfx/include
+    ${CMAKE_BINARY_DIR}/_deps/bgfx.cmake-src/bx/include
+    ${CMAKE_BINARY_DIR}/_deps/bgfx.cmake-src/bimg/include
+    ${CMAKE_BINARY_DIR}/_deps/bgfx.cmake-src/bx/include/compat
+    ${CMAKE_BINARY_DIR}/_deps/bgfx.cmake-src/bgfx/3rdparty
+    ${CMAKE_BINARY_DIR}/_deps/bgfx.cmake-src/bimg/3rdparty
+)
+
 # Engine library
 file(GLOB_RECURSE ENGINE_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
