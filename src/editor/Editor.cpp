@@ -9,7 +9,6 @@
 #include <SDL.h>
 #include <SDL_syswm.h>
 #include <bgfx/bgfx.h>
-#include <bgfx/platform.h>
 #include <cstdio>
 #include <cstring>
 

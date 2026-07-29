@@ -1,9 +1,9 @@
 #pragma once
 #include <bgfx/bgfx.h>
-#include <bgfx/platform.h>
 #include <string>
 #include <unordered_map>
 #include <memory>
+#include <vector>
 #include "math/Math.h"
 
 namespace nexus::graphics {

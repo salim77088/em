@@ -1,11 +1,11 @@
 #include "Renderer.h"
 #include "../core/Logger.h"
 #include <bgfx/bgfx.h>
-#include <bgfx/platform.h>
 #include <SDL.h>
 #include <SDL_syswm.h>
 #include <vector>
 #include <cmath>
+#include <cstring>
 
 namespace nexus::graphics {
 
