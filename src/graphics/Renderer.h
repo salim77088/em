@@ -23,7 +23,6 @@ struct MeshData {
     std::vector<uint8_t> vertices;
     std::vector<uint8_t> indices;
     bgfx::VertexLayout layout;
-    bgfx::TopologyHandle topology = BGFX_INVALID_TOPOLOGY;
     uint32_t indexCount = 0;
     bool indexed = false;
 };
@@ -41,7 +40,7 @@ public:
 
     void submit(bgfx::ProgramHandle program, uint64_t state = BGFX_STATE_DEFAULT) const;
 
-    bool valid() const { return m_vbh.idx != bgfx::kInvalidHandle && m_ibh.idx == (m_indexed ? m_ibh.idx : bgfx::kInvalidHandle) || m_vbh.idx != bgfx::kInvalidHandle; }
+    bool valid() const { return m_vbh.idx != bgfx::kInvalidHandle; }
     bgfx::VertexBufferHandle vbo() const { return m_vbh; }
     bgfx::IndexBufferHandle ibo() const { return m_ibh; }
     bool indexed() const { return m_indexed; }

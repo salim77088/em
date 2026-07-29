@@ -33,7 +33,6 @@ bool Editor::init(core::Window* window, graphics::Renderer* renderer) {
     ImGui::SetCurrentContext(m_context);
     ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     io.IniFilename = "nexus_editor.ini";
 
     // Style

@@ -77,8 +77,8 @@ public:
     const entt::registry& registry() const { return m_registry; }
 
     void clear();
-    bool empty() const { return m_registry.empty(); }
-    size_t size() const { return m_registry.alive(); }
+    bool empty() const { return m_registry.storage<entt::entity>().empty(); }
+    size_t size() const { return m_registry.storage<entt::entity>().in_use(); }
 
     bool saveToJson(const std::string& path) const;
     bool loadFromJson(const std::string& path);
